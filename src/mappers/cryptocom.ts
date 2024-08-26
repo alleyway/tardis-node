@@ -32,7 +32,8 @@ export class CryptoComTradesMapper implements Mapper<'crypto-com' | 'crypto-com-
         amount: Number(item.q),
         side: item.s === 'BUY' ? 'buy' : 'sell',
         timestamp: new Date(item.t),
-        localTimestamp
+        localTimestamp,
+        exchangeSpecific: pruneObject(item, CryptoComTradeMessageExcluded)
       }
 
       yield trade
@@ -244,6 +245,7 @@ type CryptoComTradeMessage =
             d: 1210447366 // trade id
             t: 1587523078844 // trade time
             dataTime: 0 // please ignore this field
+            [key: string]: any
           }
         ]
       }
@@ -256,9 +258,20 @@ type CryptoComTradeMessage =
         channel: 'trade'
         subscription: 'trade.BTCUSD-PERP'
         instrument_name: 'BTCUSD-PERP'
-        data: [{ d: '4611686018439397540'; t: 1653992578435; p: '31603.5'; q: '0.1000'; s: 'BUY'; i: 'BTCUSD-PERP' }]
+        data: [{ d: '4611686018439397540'; t: 1653992578435; p: '31603.5'; q: '0.1000'; s: 'BUY'; i: 'BTCUSD-PERP', [key: string]: any }]
       }
     }
+
+// for exchangeSpecific property
+const CryptoComTradeMessageExcluded = [
+  "p",
+  "q",
+  "s",
+  "d",
+  "t",
+  "i"
+] as const;
+
 
 type CryptoComBookMessage =
   | {

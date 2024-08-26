@@ -30,7 +30,8 @@ export class BybitSpotTradesMapper implements Mapper<'bybit-spot', Trade> {
       amount: Number(bybitTrade.q),
       side: bybitTrade.m === true ? 'buy' : 'sell',
       timestamp: new Date(bybitTrade.t),
-      localTimestamp
+      localTimestamp,
+      exchangeSpecific: pruneObject(bybitTrade, BybitSpotTradeMessageExcluded)
     }
   }
 }
@@ -113,8 +114,25 @@ type BybitSpotBookTickerMessage = {
 type BybitSpotTradeMessage = {
   topic: 'trade'
   params: { symbol: 'XRP3SUSDT'; binary: 'false'; symbolName: 'XRP3SUSDT' }
-  data: { v: '2220000000006443832'; t: 1659312000387; p: '6.3957'; q: '3.5962'; m: boolean }
+  data: {
+    v: '2220000000006443832';
+    t: 1659312000387;
+    p: '6.3957';
+    q: '3.5962';
+    m: boolean
+    [key: string]: any
+  }
 }
+
+// for exchangeSpecific property
+const BybitSpotTradeMessageExcluded = [
+  "v",
+  "t",
+  "p",
+  "q",
+  "m"
+] as const;
+
 
 type BybitSpotDepthMessage = {
   topic: 'depth'

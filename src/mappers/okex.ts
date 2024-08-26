@@ -46,7 +46,8 @@ export class OkexV5TradesMapper implements Mapper<OKEX_EXCHANGES, Trade> {
         amount: Number(okexTrade.sz),
         side: okexTrade.side === 'buy' ? 'buy' : 'sell',
         timestamp: new Date(Number(okexTrade.ts)),
-        localTimestamp: localTimestamp
+        localTimestamp: localTimestamp,
+        exchangeSpecific: pruneObject(okexTrade, OkexV5TradeMessageExcluded)
       }
     }
   }
@@ -595,13 +596,24 @@ export class OkexV5OptionSummaryMapper implements Mapper<'okex-options', OptionS
 
 type OkexV5TradeMessage = {
   arg: { channel: 'trades'; instId: 'CRV-USDT' }
-  data: [{ instId: 'CRV-USDT'; tradeId: '21300150'; px: '3.973'; sz: '13.491146'; side: 'buy'; ts: '1639999319938' }]
+  data: [{ instId: 'CRV-USDT'; tradeId: '21300150'; px: '3.973'; sz: '13.491146'; side: 'buy'; ts: '1639999319938', [key: string]: any }]
 }
 
 type OkexV5TradesAllMessage = {
   arg: { channel: 'trades-all'; instId: string }
-  data: [{ instId: 'WAXP-USDT'; tradeId: '2251300'; px: '0.05566'; sz: '838.714488'; side: 'sell'; ts: '1697760000083' }]
+  data: [{ instId: 'WAXP-USDT'; tradeId: '2251300'; px: '0.05566'; sz: '838.714488'; side: 'sell'; ts: '1697760000083', [key: string]: any }]
 }
+
+
+// for exchangeSpecific property
+const OkexV5TradeMessageExcluded = [
+  "instId",
+  "tradeId",
+  "px",
+  "sz",
+  "side",
+  "ts"
+] as const;
 
 type OkexV5BookLevel = [string, string, string, string]
 

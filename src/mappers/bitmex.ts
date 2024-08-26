@@ -31,7 +31,8 @@ export const bitmexTradesMapper: Mapper<'bitmex', Trade> = {
         amount: bitmexTrade.size,
         side: bitmexTrade.side !== undefined ? (bitmexTrade.side === 'Buy' ? 'buy' : 'sell') : 'unknown',
         timestamp: new Date(bitmexTrade.timestamp),
-        localTimestamp: localTimestamp
+        localTimestamp: localTimestamp,
+        exchangeSpecific: pruneObject(bitmexTrade, BitmexTradesMessageExcluded)
       }
 
       yield trade
@@ -296,8 +297,20 @@ type BitmexTradesMessage = BitmexDataMessage & {
     size: number
     price: number
     timestamp: string
+    [key: string]: any
   }[]
 }
+
+// for exchangeSpecific property
+const BitmexTradesMessageExcluded = [
+  "symbol",
+  "trdMatchID",
+  "side",
+  "size",
+  "price",
+  "timestamp"
+] as const;
+
 
 type BitmexInstrument = {
   symbol: string
