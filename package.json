@@ -1,5 +1,5 @@
 {
-  "name": "tardis-dev",
+  "name": "@alleyway/tardis-dev",
   "version": "13.29.14",
   "engines": {
     "node": ">=12"
@@ -8,7 +8,7 @@
   "main": "dist/index.js",
   "source": "src/index.ts",
   "types": "dist/index.d.ts",
-  "repository": "tardis-dev/tardis-node",
+  "repository": "alleyway/tardis-node",
   "homepage": "https://docs.tardis.dev/api/node-js",
   "scripts": {
     "build": "tsc",

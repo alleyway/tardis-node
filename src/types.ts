@@ -30,6 +30,7 @@ export type Trade = {
   readonly side: 'buy' | 'sell' | 'unknown' // liquidity taker side (aggressor)
   readonly timestamp: Date
   readonly localTimestamp: Date
+  readonly exchangeSpecific?: any
 }
 
 export type BookPriceLevel = {

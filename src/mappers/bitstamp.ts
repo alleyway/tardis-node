@@ -31,6 +31,8 @@ export const bitstampTradesMapper: Mapper<'bitstamp', Trade> = {
     const timestamp = new Date(microtimestamp / 1000)
     timestamp.μs = microtimestamp % 1000
 
+
+
     yield {
       type: 'trade',
       symbol: symbol.toUpperCase(),
@@ -40,7 +42,11 @@ export const bitstampTradesMapper: Mapper<'bitstamp', Trade> = {
       amount: Number(bitstampTrade.amount),
       side: bitstampTrade.type === 0 ? 'buy' : 'sell',
       timestamp,
-      localTimestamp
+      localTimestamp,
+      exchangeSpecific: {
+        buy_order_id: bitstampTrade.buy_order_id,
+        sell_order_id: bitstampTrade.sell_order_id
+      }
     }
   }
 }
@@ -177,6 +183,8 @@ type BitstampTrade = {
     price: number
     type: number
     id: number
+    buy_order_id: number // <--- I had to add this
+    sell_order_id: number// <--- I had to add this
   }
 }
 type BitstampBookLevel = [string, string]
