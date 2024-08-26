@@ -170,6 +170,9 @@ export type BookSnapshot = {
 }
 
 declare global {
+  // for exchangeSpecific property
+  function pruneObject<T extends object>(obj: T, exclusionKeys: ReadonlyArray<keyof T>): any
+
   interface Date {
     μs?: number
   }

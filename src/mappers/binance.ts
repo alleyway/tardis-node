@@ -46,7 +46,8 @@ export class BinanceTradesMapper
       amount: Number(binanceTrade.q),
       side: binanceTrade.m ? 'sell' : 'buy',
       timestamp: new Date(binanceTrade.T),
-      localTimestamp: localTimestamp
+      localTimestamp: localTimestamp,
+      exchangeSpecific: pruneObject(binanceTrade, BinanceTradeDataExcluded)
     }
 
     yield trade
@@ -460,7 +461,18 @@ type BinanceTradeData = {
   T: number
   m: true
   X?: 'INSURANCE_FUND' | 'MARKET' | 'ADL' | 'NA'
+  [key: string]: any
 }
+
+// for exchangeSpecific property
+const BinanceTradeDataExcluded = [
+  "s",
+  "t",
+  "p",
+  "q",
+  "T",
+  "m"
+] as const;
 
 type BinanceBookLevel = [string, string]
 

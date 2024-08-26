@@ -33,7 +33,8 @@ export const coinbaseTradesMapper: Mapper<'coinbase', Trade> = {
       amount: Number(message.size),
       side: message.side === 'sell' ? 'buy' : 'sell', // coinbase side field indicates the maker order side
       timestamp,
-      localTimestamp: localTimestamp
+      localTimestamp: localTimestamp,
+      exchangeSpecific: pruneObject(message, CoinbaseTradeExcluded)
     }
   }
 }
@@ -185,7 +186,18 @@ type CoinbaseTrade = {
   size: string
   price: string
   side: 'sell' | 'buy'
+  [key: string]: any;
 }
+
+// for exchangeSpecific property
+const CoinbaseTradeExcluded = [
+  "type",
+  "trade_id",
+  "product_id",
+  "size",
+  "price",
+  "side"
+] as const;
 
 type CoinbaseSnapshotBookLevel = [string, string]
 

@@ -1,3 +1,4 @@
+export * from './alleyway'
 export * from './apikeyaccessinfo'
 export * from './clearcache'
 export * from './combine'
